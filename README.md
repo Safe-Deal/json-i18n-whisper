@@ -2,6 +2,9 @@
 
 A Node.js package to translate JSON files using Google Cloud Translate API. This tool helps you quickly translate your JSON language files into multiple languages, making internationalization of your projects easier.
 
+![Translation Process](./sample/translation-process.png)
+_Figure: Example output of json-i18n-whisper translation process_
+
 ## Features
 
 - Translates JSON files to multiple languages simultaneously
@@ -25,28 +28,33 @@ yarn global add json-i18n-whisper
 - A Google Cloud Platform account with the Translate API enabled
 - A Google Cloud API key with access to the Translate API
 
-Set your API key as an environment variable:
-
-```bash
-export GOOGLE_TRANSLATE_API_KEY=your_api_key_here
-```
-
 ## Usage
 
 ### Command Line Interface
 
-```bash
-translate-json <inputLang> <targetLangs>
-```
-
-- `inputLang`: The source language code (e.g., 'en' for English)
-- `targetLangs`: Comma-separated list of target language codes (e.g., 'fr,es,de')
-
-Example:
+You can run the script using the following command:
 
 ```bash
-translate-json en fr,es,de
+translate-json <inputLang> <targetLangs> [apiKey]
 ```
+
+- `<inputLang>`: The source language code (e.g., 'en' for English)
+- `<targetLangs>`: Comma-separated list of target language codes (e.g., 'fr,es,de')
+- `[apiKey]`: (Optional) Your Google Cloud Translate API key. If not provided, the script will look for the GOOGLE_TRANSLATE_API_KEY environment variable.
+
+Examples:
+
+1. Using an environment variable:
+
+   ```bash
+   export GOOGLE_TRANSLATE_API_KEY=your_api_key_here
+   translate-json en fr,es,de
+   ```
+
+2. Providing the API key as an argument:
+   ```bash
+   translate-json en fr,es,de your_api_key_here
+   ```
 
 This will translate the `en.json` file to French, Spanish, and German, creating `fr.json`, `es.json`, and `de.json` files.
 
