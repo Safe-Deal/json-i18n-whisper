@@ -1,6 +1,6 @@
 {
   "name": "json-i18n-whisper",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "A package to translate JSON files using Google Translate API",
   "main": "index.js",
   "repository": {
