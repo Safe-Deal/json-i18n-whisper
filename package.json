@@ -1,0 +1,30 @@
+{
+  "name": "json-i18n-whisper",
+  "version": "1.0.0",
+  "description": "A package to translate JSON files using Google Translate API",
+  "main": "index.js",
+  "bin": {
+    "translate-json": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "translate",
+    "json",
+    "google-translate"
+  ],
+  "author": "Safe Deal",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/translate": "^6.3.1"
+  },
+  "files": [
+    "index.js",
+    "translate-json.js"
+  ],
+  "devDependencies": {
+    "jest": "^27.0.6"
+  }
+}
