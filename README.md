@@ -3,7 +3,6 @@
 A Node.js package to translate JSON files using Google Cloud Translate API. This tool helps you quickly translate your JSON language files into multiple languages, making internationalization of your projects easier.
 
 ![Translation Process](./sample/translation-process.png)
-_Figure: Example output of json-i18n-whisper translation process_
 
 ## Features
 

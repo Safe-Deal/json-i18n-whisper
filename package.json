@@ -1,6 +1,6 @@
 {
   "name": "json-i18n-whisper",
-  "version": "1.0.0",
+  "version": "1.2.3",
   "description": "A package to translate JSON files using Google Translate API",
   "main": "index.js",
   "repository": {
@@ -25,7 +25,27 @@
     "google-translate",
     "i18n",
     "internationalization",
-    "localization"
+    "localization",
+    "i18n",
+    "internationalization",
+    "localization",
+    "translation",
+    "language",
+    "google-cloud",
+    "automation",
+    "batch-translation",
+    "multi-language",
+    "json-files",
+    "google-cloud-translate",
+    "translate-api",
+    "language-translation",
+    "json-translation",
+    "google-translate-api",
+    "json-localization",
+    "json-internationalization",
+    "language-support",
+    "translation-tool",
+    "json-i18n"
   ],
   "author": {
     "name": "Safe Deal",
