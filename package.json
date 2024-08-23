@@ -17,7 +17,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "jest",
-    "lint": "eslint .",
+    "lint": "eslint . --config eslint.config.js",
     "prepublishOnly": "npm test && npm run lint"
   },
   "keywords": [
@@ -30,8 +30,8 @@
   ],
   "author": {
     "name": "Safe Deal",
-    "email": "contact@safedeal.com",
-    "url": "https://safedeal.com"
+    "email": "hi@joinsafedeal.com",
+    "url": "https://www.joinsafedeal.com"
   },
   "license": "MIT",
   "engines": {
@@ -41,8 +41,10 @@
     "@google-cloud/translate": "^6.3.1"
   },
   "devDependencies": {
-    "jest": "^27.0.6",
-    "eslint": "^7.32.0"
+    "eslint": "^9.9.1",
+    "@eslint/js": "^9.9.1",
+    "globals": "^13.24.0",
+    "jest": "^27.0.6"
   },
   "files": [
     "index.js",
