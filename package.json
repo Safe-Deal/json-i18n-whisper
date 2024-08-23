@@ -16,8 +16,9 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "prepublishOnly": "npm test"
+    "test": "jest",
+    "lint": "eslint . --config eslint.config.js",
+    "prepublishOnly": "npm test && npm run lint"
   },
   "keywords": [
     "translate",
@@ -40,6 +41,9 @@
     "@google-cloud/translate": "^6.3.1"
   },
   "devDependencies": {
+    "eslint": "^9.9.1",
+    "@eslint/js": "^9.9.1",
+    "globals": "^13.24.0",
     "jest": "^27.0.6"
   },
   "files": [
@@ -50,9 +54,5 @@
   ],
   "publishConfig": {
     "access": "public"
-  },
-  "jest": {
-    "transform": {}
-  },
-  "type": "module"
+  }
 }

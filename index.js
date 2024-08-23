@@ -1,22 +1,22 @@
 #!/usr/bin/env node
-import translateJson from "./translate-json.js";
+const translateJson = require("./translate-json");
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (require.main === module) {
   const args = process.argv.slice(2);
-  if (args.length < 2 || args.length > 3) {
-    console.error("Usage: translate-json <inputLang> <targetLangs> [apiKey]");
+  if (args.length < 2) {
+    console.error("Usage: translate-json <inputLang> <targetLangs>");
     process.exit(1);
   }
 
-  const [inputLang, targetLangs, cliApiKey] = args;
-  const apiKey = cliApiKey || process.env.GOOGLE_TRANSLATE_API_KEY;
+  const [inputLang, targetLangs] = args;
+  const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY;
 
   if (!apiKey) {
-    console.error("❌ Error: API key not provided. Please provide it as a command-line argument or set the GOOGLE_TRANSLATE_API_KEY environment variable.");
+    console.error("❌ Error: GOOGLE_TRANSLATE_API_KEY environment variable is not set");
     process.exit(1);
   }
 
   translateJson(inputLang, targetLangs, apiKey);
 }
 
-export default translateJson;
+module.exports = translateJson;

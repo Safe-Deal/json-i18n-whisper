@@ -25,17 +25,22 @@ yarn global add json-i18n-whisper
 - A Google Cloud Platform account with the Translate API enabled
 - A Google Cloud API key with access to the Translate API
 
+Set your API key as an environment variable:
+
+```bash
+export GOOGLE_TRANSLATE_API_KEY=your_api_key_here
+```
+
 ## Usage
 
 ### Command Line Interface
 
 ```bash
-translate-json <inputLang> <targetLangs> [apiKey]
+translate-json <inputLang> <targetLangs>
 ```
 
 - `inputLang`: The source language code (e.g., 'en' for English)
 - `targetLangs`: Comma-separated list of target language codes (e.g., 'fr,es,de')
-- `apiKey`: Optional Google Translate API key (if not provided, it will be read from the `GOOGLE_TRANSLATE_API_KEY` environment variable)
 
 Example:
 
