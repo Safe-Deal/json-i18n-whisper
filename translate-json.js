@@ -1,6 +1,5 @@
-/* eslint-disable no-console */
-const fs = require("fs");
-const { Translate } = require("@google-cloud/translate").v2;
+import fs from "fs";
+import { Translate } from "@google-cloud/translate/build/src/v2/index.js";
 
 const costPerMillionCharsUsd = 20;
 const batchSize = 100;
@@ -82,14 +81,14 @@ const translateJson = async (inputLang, targetLangs, apiKey) => {
 
     const inputPath = `${inputLang}.json`;
     const data = JSON.parse(fs.readFileSync(inputPath, "utf-8"));
-    const langsAmounts = targetLangs.split(",").length;
+    const langsArray = targetLangs.split(",");
     const textLength = JSON.stringify(data).length;
-    const estimatedCost = ((textLength / 1_000_000) * costPerMillionCharsUsd * langsAmounts).toFixed(2);
+    const estimatedCost = ((textLength / 1_000_000) * costPerMillionCharsUsd * langsArray.length).toFixed(2);
 
     console.log(`\n🔄 Starting translation process...`);
-    console.log(`\n¤ Estimated cost: $${estimatedCost} for ${langsAmounts} languages`);
+    console.log(`\n¤ Estimated cost: $${estimatedCost} for ${langsArray.length} languages`);
 
-    const translations = await translateObject(data, inputLang, targetLangs.split(","), translate);
+    const translations = await translateObject(data, inputLang, langsArray, translate);
 
     for (const [lang, translatedData] of Object.entries(translations)) {
       const outputPath = `${lang}.json`;
@@ -103,7 +102,7 @@ const translateJson = async (inputLang, targetLangs, apiKey) => {
   }
 };
 
-module.exports = translateJson;
+export default translateJson;
 
 function removeDiacritics(text) {
   return text

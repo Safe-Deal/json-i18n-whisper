@@ -1,8 +1,9 @@
-const translateJson = require("./translate-json");
-const { Translate } = require("@google-cloud/translate").v2;
-const fs = require("fs");
+import { jest } from "@jest/globals";
+import translateJson from "./translate-json.js";
+import { Translate } from "@google-cloud/translate/build/src/v2/index.js";
+import fs from "fs";
 
-jest.mock("@google-cloud/translate");
+jest.mock("@google-cloud/translate/build/src/v2/index.js");
 jest.mock("fs");
 
 describe("translateJson", () => {
