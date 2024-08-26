@@ -111,7 +111,7 @@ describe("translateJson", () => {
 
     console.error = jest.fn();
 
-    await translateJson("en", "fr", "fake-api-key");
+    await expect(translateJson("en", "fr", "fake-api-key")).rejects.toThrow("Translation API error");
 
     expect(console.error).toHaveBeenCalledWith("❌ Error during translation:", expect.any(Error));
     expect(fs.writeFileSync).not.toHaveBeenCalled();
@@ -132,6 +132,6 @@ describe("translateJson", () => {
     await translateJson("en", "fr,es", "fake-api-key");
 
     expect(console.log).toHaveBeenCalledWith(expect.stringContaining("Estimated cost: $"));
-    expect(console.log).toHaveBeenCalledWith(expect.stringContaining("for 2 languages"));
+    expect(console.log).toHaveBeenCalledWith(expect.stringContaining("Number of target languages: 2 (fr, es)"));
   });
 });

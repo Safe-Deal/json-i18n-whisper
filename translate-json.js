@@ -76,57 +76,79 @@ const translateObject = async (obj, sourceLang, targetLangs, translate) => {
   return translations;
 };
 
+const countCharacters = (obj) => {
+  let count = 0;
+  const traverse = (item) => {
+    if (typeof item === "string") {
+      count += item.length;
+    } else if (Array.isArray(item)) {
+      item.forEach(traverse);
+    } else if (typeof item === "object" && item !== null) {
+      Object.values(item).forEach(traverse);
+    }
+  };
+  traverse(obj);
+  return count;
+};
+
 const translateJson = async (inputLang, targetLangs, apiKey, isCLI = false) => {
-  const translate = new Translate({ key: apiKey });
+  try {
+    const translate = new Translate({ key: apiKey });
 
-  const inputPath = `${inputLang}.json`;
-  const data = JSON.parse(fs.readFileSync(inputPath, "utf-8"));
-  const targetLangsArray = targetLangs.split(",");
-  const langsAmounts = targetLangsArray.length;
-  const textLength = JSON.stringify(data).length;
-  const estimatedCost = ((textLength / 1_000_000) * costPerMillionCharsUsd * langsAmounts).toFixed(2);
+    const inputPath = `${inputLang}.json`;
+    const data = JSON.parse(fs.readFileSync(inputPath, "utf-8"));
+    const targetLangsArray = targetLangs.split(",");
+    const langsAmounts = targetLangsArray.length;
+    const textLength = countCharacters(data);
+    const totalCharacters = textLength * targetLangsArray.length;
+    const estimatedCost = ((totalCharacters / 1_000_000) * costPerMillionCharsUsd).toFixed(10);
 
-  console.log(`\n🔄 Starting translation process...`);
-  console.log(`\n¤ Total characters to be translated: ${textLength}`);
-  console.log(`¤ Cost per million characters: $${costPerMillionCharsUsd}`);
-  console.log(`¤ Number of target languages: ${langsAmounts} (${targetLangsArray.join(", ")})`);
-  console.log(`¤ Estimated cost: $${estimatedCost} for translating to ${targetLangsArray.join(", ")}`);
+    console.log(`\n🔄 Starting translation process...`);
+    console.log(`\n¤ Total characters to be translated: ${textLength}`);
+    console.log(`¤ Number of target languages: ${targetLangsArray.length} (${targetLangsArray.join(", ")})`);
+    console.log(`¤ Total characters (including all target languages): ${totalCharacters}`);
+    console.log(`¤ Cost per million characters: $${costPerMillionCharsUsd.toFixed(2)}`);
+    console.log(`¤ Estimated cost: $${estimatedCost}`);
 
-  if (isCLI) {
-    console.log("\n┌──────────────────────────────────────────────────┐");
-    console.log("│ Press Enter to continue, Esc or Ctrl+C to cancel │");
-    console.log("└──────────────────────────────────────────────────┘");
+    if (isCLI) {
+      console.log("\n┌──────────────────────────────────────────────────┐");
+      console.log("│ Press Enter to continue, Esc or Ctrl+C to cancel │");
+      console.log("└──────────────────────────────────────────────────┘");
 
-    await new Promise((resolve) => {
-      process.stdin.setRawMode(true);
-      process.stdin.resume();
-      process.stdin.once("data", (key) => {
-        const byteArray = [...key];
-        if (byteArray[0] === 3 || byteArray[0] === 27) {
-          // 3 for Ctrl+C, 27 for Esc
-          console.log("\n❌ Translation cancelled.");
-          process.exit(0);
-        } else if (byteArray[0] === 13) {
-          // 13 for Enter
-          process.stdin.setRawMode(false);
-          process.stdin.pause();
-          resolve();
-        }
+      await new Promise((resolve) => {
+        process.stdin.setRawMode(true);
+        process.stdin.resume();
+        process.stdin.once("data", (key) => {
+          const byteArray = [...key];
+          if (byteArray[0] === 3 || byteArray[0] === 27) {
+            // 3 for Ctrl+C, 27 for Esc
+            console.log("\n❌ Translation cancelled.");
+            process.exit(0);
+          } else if (byteArray[0] === 13) {
+            // 13 for Enter
+            process.stdin.setRawMode(false);
+            process.stdin.pause();
+            resolve();
+          }
+        });
       });
-    });
 
-    console.log("\n✅ Continuing with translation...");
+      console.log("\n✅ Continuing with translation...");
+    }
+
+    const translations = await translateObject(data, inputLang, targetLangsArray, translate);
+
+    for (const [lang, translatedData] of Object.entries(translations)) {
+      const outputPath = `${lang}.json`;
+      fs.writeFileSync(outputPath, JSON.stringify(translatedData, null, 2));
+      console.log(`✅ Written to ${outputPath}`);
+    }
+
+    console.log("\nTranslation completed successfully.");
+  } catch (error) {
+    console.error("❌ Error during translation:", error);
+    throw error;
   }
-
-  const translations = await translateObject(data, inputLang, targetLangsArray, translate);
-
-  for (const [lang, translatedData] of Object.entries(translations)) {
-    const outputPath = `${lang}.json`;
-    fs.writeFileSync(outputPath, JSON.stringify(translatedData, null, 2));
-    console.log(`✅ Written to ${outputPath}`);
-  }
-
-  console.log("\nTranslation completed successfully.");
 };
 
 module.exports = translateJson;
