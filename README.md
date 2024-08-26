@@ -12,6 +12,12 @@ A Node.js package to translate JSON files using Google Cloud Translate API. This
 - Uses Google Cloud Translate API for accurate translations
 - Handles special cases for languages like Hebrew and Arabic
 
+---
+
+This package is part of Safe Deal localization codebase.
+For a wise & fast shopping experience, check out [Safe Deal](https://www.joinsafedeal.com/go?type=npm).
+Learn more about Safe Deal [here](https://www.joinsafedeal.com/).
+
 ## Installation
 
 You can install this package globally using npm or yarn:
@@ -89,8 +95,6 @@ Before translation begins, the tool provides an estimated cost based on the curr
 ## Testing
 
 This package uses Jest for testing. To run the tests, follow these steps:
-
-1. Install development dependencies:
 
 ```bash
 npm install
