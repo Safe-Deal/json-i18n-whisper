@@ -2,7 +2,7 @@
 const fs = require("fs");
 const { Translate } = require("@google-cloud/translate").v2;
 
-const costPerMillionCharsUsd = 20;
+const costPerMillionCharsUsd = 20; // Update this value if the price has changed
 const batchSize = 100;
 
 const translateInBatches = async (textToTranslate, sourceLang, targetLang, translate) => {
@@ -76,31 +76,57 @@ const translateObject = async (obj, sourceLang, targetLangs, translate) => {
   return translations;
 };
 
-const translateJson = async (inputLang, targetLangs, apiKey) => {
-  try {
-    const translate = new Translate({ key: apiKey });
+const translateJson = async (inputLang, targetLangs, apiKey, isCLI = false) => {
+  const translate = new Translate({ key: apiKey });
 
-    const inputPath = `${inputLang}.json`;
-    const data = JSON.parse(fs.readFileSync(inputPath, "utf-8"));
-    const langsAmounts = targetLangs.split(",").length;
-    const textLength = JSON.stringify(data).length;
-    const estimatedCost = ((textLength / 1_000_000) * costPerMillionCharsUsd * langsAmounts).toFixed(2);
+  const inputPath = `${inputLang}.json`;
+  const data = JSON.parse(fs.readFileSync(inputPath, "utf-8"));
+  const targetLangsArray = targetLangs.split(",");
+  const langsAmounts = targetLangsArray.length;
+  const textLength = JSON.stringify(data).length;
+  const estimatedCost = ((textLength / 1_000_000) * costPerMillionCharsUsd * langsAmounts).toFixed(2);
 
-    console.log(`\n🔄 Starting translation process...`);
-    console.log(`\n¤ Estimated cost: $${estimatedCost} for ${langsAmounts} languages`);
+  console.log(`\n🔄 Starting translation process...`);
+  console.log(`\n¤ Total characters to be translated: ${textLength}`);
+  console.log(`¤ Cost per million characters: $${costPerMillionCharsUsd}`);
+  console.log(`¤ Number of target languages: ${langsAmounts} (${targetLangsArray.join(", ")})`);
+  console.log(`¤ Estimated cost: $${estimatedCost} for translating to ${targetLangsArray.join(", ")}`);
 
-    const translations = await translateObject(data, inputLang, targetLangs.split(","), translate);
+  if (isCLI) {
+    console.log("\n┌──────────────────────────────────────────────────┐");
+    console.log("│ Press Enter to continue, Esc or Ctrl+C to cancel │");
+    console.log("└──────────────────────────────────────────────────┘");
 
-    for (const [lang, translatedData] of Object.entries(translations)) {
-      const outputPath = `${lang}.json`;
-      fs.writeFileSync(outputPath, JSON.stringify(translatedData, null, 2));
-      console.log(`✅ Written to ${outputPath}`);
-    }
+    await new Promise((resolve) => {
+      process.stdin.setRawMode(true);
+      process.stdin.resume();
+      process.stdin.once("data", (key) => {
+        const byteArray = [...key];
+        if (byteArray[0] === 3 || byteArray[0] === 27) {
+          // 3 for Ctrl+C, 27 for Esc
+          console.log("\n❌ Translation cancelled.");
+          process.exit(0);
+        } else if (byteArray[0] === 13) {
+          // 13 for Enter
+          process.stdin.setRawMode(false);
+          process.stdin.pause();
+          resolve();
+        }
+      });
+    });
 
-    console.log("\nTranslation completed successfully.");
-  } catch (error) {
-    console.error("❌ Error during translation:", error);
+    console.log("\n✅ Continuing with translation...");
   }
+
+  const translations = await translateObject(data, inputLang, targetLangsArray, translate);
+
+  for (const [lang, translatedData] of Object.entries(translations)) {
+    const outputPath = `${lang}.json`;
+    fs.writeFileSync(outputPath, JSON.stringify(translatedData, null, 2));
+    console.log(`✅ Written to ${outputPath}`);
+  }
+
+  console.log("\nTranslation completed successfully.");
 };
 
 module.exports = translateJson;
