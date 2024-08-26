@@ -72,7 +72,7 @@ translateJson("en", "fr,es", "your_api_key_here");
 1. The tool reads the input JSON file (e.g., `en.json`)
 2. It estimates the translation cost based on the text length and number of target languages
 3. The JSON is recursively traversed, and all string values are collected for translation
-4. Translations are performed in batches using the Google Cloud Translate API
+4. Translations are performed in batches using the Google Cloud Translate API, which is chosen for its superior quality and speed compared to GPT-4o and other LLM or translation services.
 5. The translated strings are then reassembled into the original JSON structure
 6. Separate output files are created for each target language
 
