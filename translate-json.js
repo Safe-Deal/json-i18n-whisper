@@ -106,11 +106,11 @@ const translateJson = async (inputLang, targetLangs, apiKey, isCLI = false) => {
     console.log("\n🔄 Starting translation process...");
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     console.log(`📊 Translation Statistics:`);
-    console.log(`   • Total characters to be translated: ${textLength.toLocaleString()}`);
-    console.log(`   • Number of target languages: ${targetLangsArray.length} (${targetLangsArray.join(", ")})`);
-    console.log(`   • Total characters (including all target languages): ${totalCharacters.toLocaleString()}`);
-    console.log(`   • Cost per million characters: $${costPerMillionCharsUsd.toFixed(2)}`);
-    console.log(`   • Estimated cost: $${estimatedCost}`);
+    console.log(`   • Total characters to be translated: \x1b[1m${textLength.toLocaleString()}\x1b[0m`);
+    console.log(`   • Number of target languages: \x1b[1m${targetLangsArray.length}\x1b[0m (${targetLangsArray.join(", ")})`);
+    console.log(`   • Total characters (including all target languages): \x1b[1m${totalCharacters.toLocaleString()}\x1b[0m`);
+    console.log(`   • Cost per million characters: \x1b[1m$${costPerMillionCharsUsd.toFixed(2)}\x1b[0m`);
+    console.log(`   • Estimated cost: \x1b[1m$${estimatedCost}\x1b[0m`);
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
     if (isCLI) {
