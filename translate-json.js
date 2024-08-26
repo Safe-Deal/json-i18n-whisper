@@ -103,12 +103,15 @@ const translateJson = async (inputLang, targetLangs, apiKey, isCLI = false) => {
     const totalCharacters = textLength * targetLangsArray.length;
     const estimatedCost = ((totalCharacters / 1_000_000) * costPerMillionCharsUsd).toFixed(10);
 
-    console.log(`\n🔄 Starting translation process...`);
-    console.log(`\n¤ Total characters to be translated: ${textLength}`);
-    console.log(`¤ Number of target languages: ${targetLangsArray.length} (${targetLangsArray.join(", ")})`);
-    console.log(`¤ Total characters (including all target languages): ${totalCharacters}`);
-    console.log(`¤ Cost per million characters: $${costPerMillionCharsUsd.toFixed(2)}`);
-    console.log(`¤ Estimated cost: $${estimatedCost}`);
+    console.log("\n🔄 Starting translation process...");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log(`📊 Translation Statistics:`);
+    console.log(`   • Total characters to be translated: ${textLength.toLocaleString()}`);
+    console.log(`   • Number of target languages: ${targetLangsArray.length} (${targetLangsArray.join(", ")})`);
+    console.log(`   • Total characters (including all target languages): ${totalCharacters.toLocaleString()}`);
+    console.log(`   • Cost per million characters: $${costPerMillionCharsUsd.toFixed(2)}`);
+    console.log(`   • Estimated cost: $${estimatedCost}`);
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
     if (isCLI) {
       console.log("\n┌──────────────────────────────────────────────────┐");
@@ -144,9 +147,13 @@ const translateJson = async (inputLang, targetLangs, apiKey, isCLI = false) => {
       console.log(`✅ Written to ${outputPath}`);
     }
 
-    console.log("\nTranslation completed successfully.");
+    console.log("\n✅ Translation completed successfully!");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
   } catch (error) {
-    console.error("❌ Error during translation:", error);
+    console.log("\n❌ Translation failed!");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log(`🚫 Error: ${error}`);
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
     throw error;
   }
 };
